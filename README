@@ -1,7 +1,7 @@
 == DTagLib ==
-    This is an preliminary alpha D bindings of TagLib, things might break at any time.
+    This is a preliminary alpha D bindings of TagLib, things might break at any time.
     
-    This has only been tested on Windows XP 32bit.
+    The bindings have only been tested on Windows XP 32bit.
     
 == Disclaimer ==
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
