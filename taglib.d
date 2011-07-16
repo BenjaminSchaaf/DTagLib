@@ -1,43 +1,5 @@
-/* Converted to D from tag_c.h by htod */
+/* Partially converted to D from tag_c.h by htod */
 module taglib;
-/***************************************************************************
-    copyright            : (C) 2003 by Scott Wheeler
-    email                : wheeler@kde.org
- ***************************************************************************/
-
-/***************************************************************************
- *   This library is free software; you can redistribute it and/or modify  *
- *   it  under the terms of the GNU Lesser General Public License version  *
- *   2.1 as published by the Free Software Foundation.                     *
- *                                                                         *
- *   This library is distributed in the hope that it will be useful, but   *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU     *
- *   Lesser General Public License for more details.                       *
- *                                                                         *
- *   You should have received a copy of the GNU Lesser General Public      *
- *   License along with this library; if not, write to the Free Software   *
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
- *   USA                                                                   *
- ***************************************************************************/
-
-
-/* Do not include this in the main TagLib documentation. */
-
-/*******************************************************************************
- * [ TagLib C Binding ]
- *
- * This is an interface to TagLib's "simple" API, meaning that you can read and
- * modify media files in a generic, but not specialized way.  This is a rough
- * representation of TagLib::File and TagLib::Tag, for which the documentation
- * is somewhat more complete and worth consulting.
- *******************************************************************************/
-
-/*
- * These are used for type provide some type safety to the C API (as opposed to
- * using void *, but pointers to them are simply cast to the corresponding C++
- * types in the implementation.
- */
 
 extern (C):
 

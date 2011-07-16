@@ -65,7 +65,7 @@
     TagLib is dual-licensed under LGPL and MPL.
     Please see TagLib's original licenses in the COPYING.MPL and COPYING.LGPL files.
     
-    The D bindings are Boost-licensed.
+    The D bindings are Boost-licensed. 
 
 == Links ==
     D2 Programming Language Homepage: http://d-programming-language.org/
