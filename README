@@ -1,6 +1,8 @@
 == DTagLib ==
     This is an preliminary alpha D bindings of TagLib, things might break at any time.
     
+    This has only been tested on Windows XP 32bit.
+    
 == Disclaimer ==
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -14,23 +16,58 @@
     Just run build.bat, then e.g. run:
         tagreader "C:\My Music\track.mp3"
 
-== Building TagLib ==
+== Requirements for Building TagLib ==
+    TagLib is already distributed in this binding, but if you want to build it you need:
     
-
-    Download taglist, extract somewhere.
-    Download zlib dev package from http://www.gtk.org/download/win32.php, extract to zlib directory in taglib directory.
+    TagLib from:
+        http://developer.kde.org/~wheeler/taglib.html
+    
+    Zlib Dev package from:
+        http://www.gtk.org/download/win32.php
+        
+    Cmake from:
+        http://www.cmake.org/
+    
+== Building TagLib ==
+    Extract TagLib.
+    Extract zlib dev package to TagLib directory.
         Rename zlib/lib/zdll.lib to zlib.lib
 
-    Create a build directory inside of taglist and CD to it via the console.
+    Create a `build` directory in the TagLib directory and CD to it.
     
     Run:
         cmake -DZLIB_INCLUDE_DIR:PATH="D:\dev\lib\D\taglib-1.7\zlib\include" -DZLIB_LIBRARY:FILEPATH="D:\dev\lib\D\taglib-1.7\zlib\lib\zlib.lib" -G "Visual Studio 10" ..
 
+    Note: Replace "D:\dev\lib\D\" to wherever you've extracted TagLib.
+
     Build the ALL_BUILD project in the taglib.sln solution in Release mode.
 
-    In D:\dev\lib\D\taglib-1.7\bindings\c\Release you will have tag_c.dll, copy it to your project.
-    D:\dev\lib\D\taglib-1.7\taglib\Release you will have tag.dll, copy it to your project.
+    In the `bindings\c\Release` directory, copy tag_c.dll to your project folder.
+    In the `taglib\Release` directory copy tag.dll to your project folder.
 
+    Information on building retreived from:
+        https://github.com/RJ/playdar-core/wiki/Building-on-Windows
+        http://stackoverflow.com/questions/4413949/using-taglib-in-visual-studio-2010
+        http://stackoverflow.com/questions/4413949/using-taglib-in-visual-studio-2010
 
-Information on building retreived from:
+== Contact ==
+    To contact me, send me a message via Github @ https://github.com/AndrejMitrovic, 
+    or e-mail me at: andrej.mitrovich<at>gmail.com
+
+== Todo ==
+    - Systems other than XP 32bit have not been tested.
+    - Port more samples.
+
+== Acknowledgments ==
+    Thanks to the developers and contributors of the TagLib project.
+
+== Licensing ==
+    TagLib is dual-licensed under LGPL and MPL.
+    Please see TagLib's original licenses in the COPYING.MPL and COPYING.LGPL files.
+    
+    The D bindings are Boost-licensed.
+
+== Links ==
+    D2 Programming Language Homepage: http://d-programming-language.org/
+    TagLib homepage: http://developer.kde.org/~wheeler/taglib.html
     
