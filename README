@@ -1,0 +1,36 @@
+== DTagLib ==
+    This is an preliminary alpha D bindings of TagLib, things might break at any time.
+    
+== Disclaimer ==
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT
+    SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE
+    FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE. 
+
+== Building ==
+    Just run build.bat, then e.g. run:
+        tagreader "C:\My Music\track.mp3"
+
+== Building TagLib ==
+    
+
+    Download taglist, extract somewhere.
+    Download zlib dev package from http://www.gtk.org/download/win32.php, extract to zlib directory in taglib directory.
+        Rename zlib/lib/zdll.lib to zlib.lib
+
+    Create a build directory inside of taglist and CD to it via the console.
+    
+    Run:
+        cmake -DZLIB_INCLUDE_DIR:PATH="D:\dev\lib\D\taglib-1.7\zlib\include" -DZLIB_LIBRARY:FILEPATH="D:\dev\lib\D\taglib-1.7\zlib\lib\zlib.lib" -G "Visual Studio 10" ..
+
+    Build the ALL_BUILD project in the taglib.sln solution in Release mode.
+
+    In D:\dev\lib\D\taglib-1.7\bindings\c\Release you will have tag_c.dll, copy it to your project.
+    D:\dev\lib\D\taglib-1.7\taglib\Release you will have tag.dll, copy it to your project.
+
+
+Information on building retreived from:
+    
