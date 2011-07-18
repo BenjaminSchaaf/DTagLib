@@ -1,7 +1,7 @@
 == DTagLib ==
-    This is a preliminary alpha D bindings of TagLib, things might break at any time.
+    This is a D wrapper library of the TagLib library (abstract API only).
     
-    The bindings have only been tested on Windows XP 32bit.
+    The library has been tested on Windows XP 32bit.
     
 == Disclaimer ==
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -13,11 +13,14 @@
     DEALINGS IN THE SOFTWARE. 
 
 == Building ==
-    Just run build.bat, then e.g. run:
-        tagreader "C:\My Music\track.mp3"
+    Build the wrapper library:
+        .\taglib\build.bat
+        
+    Build the samples:
+        .\samples\build.bat
 
-== Requirements for Building TagLib ==
-    TagLib is already distributed in this binding, but if you want to build it you need:
+== Requirements for building TagLib DLLs ==
+    TagLib DLLs are already distributed in this binding, but if you want to build them yourself you need:
     
     TagLib from:
         http://developer.kde.org/~wheeler/taglib.html
@@ -28,7 +31,7 @@
     Cmake from:
         http://www.cmake.org/
     
-== Building TagLib ==
+== Building TagLib DLLs ==
     Extract TagLib.
     Extract zlib dev package to TagLib directory.
         Rename zlib/lib/zdll.lib to zlib.lib
@@ -59,7 +62,8 @@
     - Port more samples.
 
 == Acknowledgments ==
-    Thanks to the developers and contributors of the TagLib project.
+    Thanks to Scott Wheeler and all other developers and contributors in the
+    TagLib project.
 
 == Licensing ==
     TagLib is dual-licensed under LGPL and MPL.

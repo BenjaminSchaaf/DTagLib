@@ -1,5 +1,5 @@
 /* Partially converted to D from tag_c.h by htod */
-module taglib;
+module taglib.c.taglib;
 
 extern (C):
 
@@ -74,7 +74,7 @@ TagLib_File * taglib_file_new_type(const char*filename, TagLib_File_Type type);
 void  taglib_file_free(TagLib_File *file);
 
 /*!
- * Returns true if the file is open and readble and valid information for
+ * Returns true if the file is open and readable and valid information for
  * the Tag and / or AudioProperties was found.
  */
 
@@ -156,35 +156,35 @@ uint  taglib_tag_track(TagLib_Tag *tag);
  *
  * \note By default this string should be UTF8 encoded.
  */
-void  taglib_tag_set_title(TagLib_Tag *tag, char *title);
+void  taglib_tag_set_title(TagLib_Tag *tag, const char *title);
 
 /*!
  * Sets the tag's artist.
  *
  * \note By default this string should be UTF8 encoded.
  */
-void  taglib_tag_set_artist(TagLib_Tag *tag, char *artist);
+void  taglib_tag_set_artist(TagLib_Tag *tag, const char *artist);
 
 /*!
  * Sets the tag's album.
  *
  * \note By default this string should be UTF8 encoded.
  */
-void  taglib_tag_set_album(TagLib_Tag *tag, char *album);
+void  taglib_tag_set_album(TagLib_Tag *tag, const char *album);
 
 /*!
  * Sets the tag's comment.
  *
  * \note By default this string should be UTF8 encoded.
  */
-void  taglib_tag_set_comment(TagLib_Tag *tag, char *comment);
+void  taglib_tag_set_comment(TagLib_Tag *tag, const char *comment);
 
 /*!
  * Sets the tag's genre.
  *
  * \note By default this string should be UTF8 encoded.
  */
-void  taglib_tag_set_genre(TagLib_Tag *tag, char *genre);
+void  taglib_tag_set_genre(TagLib_Tag *tag, const char *genre);
 
 /*!
  * Sets the tag's year.  0 indicates that this field should be cleared.

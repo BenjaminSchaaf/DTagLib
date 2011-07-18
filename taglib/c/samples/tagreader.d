@@ -52,6 +52,7 @@ void main(string[] args)
             break;
 
         tag        = taglib_file_tag(file);
+        //~ file = null; // test
         properties = taglib_file_audioproperties(file);
 
         if (tag !is null)
