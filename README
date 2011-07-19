@@ -4,6 +4,7 @@
     The library has been tested on Windows XP 32bit.
     
     This project is still in alpha stage, things might break at any moment.
+    Project Homepage: https://github.com/AndrejMitrovic/DTagLib
     
 == Disclaimer ==
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -71,7 +72,7 @@
     TagLib is dual-licensed under LGPL and MPL.
     Please see TagLib's original licenses in the COPYING.MPL and COPYING.LGPL files.
     
-    The D bindings are Boost-licensed. 
+    The D wrapper library is Boost-licensed. 
 
 == Links ==
     D2 Programming Language Homepage: http://d-programming-language.org/
