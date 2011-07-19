@@ -6,8 +6,6 @@
  +/
 
 /+
- + Ported to the D2 Programming Language by Andrej Mitrovic, 2011.
- + 
  + Run via: dtagwriter "test.mp3"
  + Warning: This will overwrite your existing tags, be careful.
  +/
