@@ -21,7 +21,7 @@ import taglib.taglib;
 
 void main(string[] args)
 {
-    TagLibFile file;
+    TagFile file;
 
     args.popFront;    
     foreach (arg; args)

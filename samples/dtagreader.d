@@ -43,14 +43,14 @@ void main(string[] args)
     int seconds;
     int minutes;
     
-    TagLibFile file;
+    TagFile file;
 
     args.popFront;    
     foreach (arg; args)
     {
         writefln("******************** \"%s\" ********************\n", arg);
 
-        file = new TagLibFile(arg);
+        file = new TagFile(arg);
 
         writeln("-- TAG --");
         writefln("title   - \"%s\"", file.tags.title);

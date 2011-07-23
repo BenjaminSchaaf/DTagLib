@@ -23,21 +23,6 @@ static this()
     taglib_id3v2_set_default_text_encoding(TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF8);
 }
 
-// @BUG@: DMD 2.054 CTFE bug http://d.puremagic.com/issues/show_bug.cgi?id=6344
-//~ private string wrapEnum(Type)(string newName, string oldName, string prefix)
-//~ {
-    //~ import std.traits;
-    
-    //~ string result = "enum " ~ newName ~ " {";
-    
-    //~ foreach (member; EnumMembers!Type)
-    //~ {
-        //~ result ~= to!string(member).replace(prefix, "") ~ " = " ~ oldName ~ "." ~ to!string(member) ~ ",";
-    //~ }
-
-    //~ return result[0..$-1] ~ "}";
-//~ }
-
 class TagLibUninitializedException : Exception
 {
     this(string msg)
@@ -54,14 +39,6 @@ class TagLibFileException : Exception
     }        
 }
 
-class TagLibUnsavedChangesException : Exception
-{
-    this(string msg)
-    {
-        super(msg);
-    }        
-}
-
 class TagLibFileSaveException : Exception
 {
     this(string msg)
@@ -70,16 +47,8 @@ class TagLibFileSaveException : Exception
     }        
 }
 
-class TagLibFile
+final class TagFile
 {
-    enum ForceClose
-    {
-        False,
-        True
-    }
-    
-    // @BUG@: DMD 2.054 CTFE bug http://d.puremagic.com/issues/show_bug.cgi?id=6344
-    //~ mixin(wrapEnum!(TagLib_File_Type)("FileType", "TagLib_File_Type", "TagLib_File_"));
     enum FileType
     {
         MPEG = TagLib_File_Type.TagLib_File_MPEG,
@@ -94,133 +63,95 @@ class TagLibFile
         ASF = TagLib_File_Type.TagLib_File_ASF,
     }
     
-    this(string fileName, ForceClose force = ForceClose.False)
+    this(string tagFileName)
     {
-        openFile(fileName, force);
+        openFile(tagFileName);
     }
     
-    this(string fileName, FileType fileType, ForceClose force = ForceClose.False)
-    {
-        openFile(fileName, fileType, force);
-    }        
-    
-    // @BUG@ Why is this never called even on explicit clear()/delete ??
     ~this()
     {
         close();
     }
     
-    void openFile(string fileName, ForceClose force = ForceClose.False)
+    void openFile(string tagFileName)
     {
-        closeIfOpened(force);
+        closeIfOpened();
         
-        this.tagLibFile = taglib_file_new(fileName.toStringz);
+        tagFile = taglib_file_new(tagFileName.toStringz);
         
-        enforce(tagLibFile, new TagLibFileException(format("Couldn't open file: %s.", fileName)));
-        enforce(taglib_file_is_valid(tagLibFile), 
-            new TagLibFileException(format("File is either unreadable or has invalid information: %s.", fileName)));
+        enforce(tagFile, new TagLibFileException(format("Couldn't open file: %s.", tagFileName)));
+        enforce(taglib_file_is_valid(tagFile), 
+            new TagLibFileException(format("File is either unreadable or has invalid information: %s.", tagFileName)));
         
-        this.fileName = fileName;
+        this.tagFileName = tagFileName;
         initProperties();
     }
     
-    void openFile(string fileName, FileType fileType, ForceClose force = ForceClose.False)
+    void openFile(string tagFileName, FileType fileType)
     {
-        closeIfOpened(force);
+        closeIfOpened();
         
-        this.tagLibFile = taglib_file_new_type(fileName.toStringz, cast(TagLib_File_Type)fileType);
+        tagFile = taglib_file_new_type(tagFileName.toStringz, cast(TagLib_File_Type)fileType);
         
-        enforce(tagLibFile, new TagLibFileException(format("Couldn't open file: %s of type %s.", fileName, fileType)));
-        enforce(taglib_file_is_valid(tagLibFile), 
-            new TagLibFileException(format("File is either unreadable or has invalid information: %s.", fileName)));
+        enforce(tagFile, new TagLibFileException(format("Couldn't open file: %s of type %s.", tagFileName, fileType)));
+        enforce(taglib_file_is_valid(tagFile), 
+            new TagLibFileException(format("File is either unreadable or has invalid information: %s.", tagFileName)));
         
-        this.fileName = fileName;
+        this.tagFileName = tagFileName;
         initProperties();
     }
     
-    void close(ForceClose force = ForceClose.False)
+    void close()
     {
-        debug
-        {
-            assert(tagLibFile !is null, format("Can't close an uninitialized TagLibFile for file: %s", fileName));
-        }
-        else
-        {
-            if (tagLibFile is null)
-                return;
-        }
+        if (tagFile is null)
+            return;
 
-        tags.free();
+        taglib_tag_free_strings();
+        taglib_file_free(tagFile);
+        tagFile = null;
         
-        if (!dirty || (dirty && (force == ForceClose.True)))
-        {
-            taglib_file_free(tagLibFile);
-            tagLibFile = null;
-            fileName = null;
-            dirty = false;
-            clearProperties();
-        }
-        else
-        {
-            throw new TagLibUnsavedChangesException(format("Cannot unforcefully close file while changes are left unsaved: %s.", fileName));
-        }
+        /+
+         + Originally I thought about using AutoImplement to make a guard class, but this is 
+         + impossible since AutoImplement expects a template that returns a string. I can't pass
+         + a custom exception to AutoImplement.
+         +/
+        tags = null;
+        audio = null;
     }
     
     void save()
     {
-        enforce(tagLibFile !is null, new TagLibUninitializedException("Can't save uninitialized TagLibFile."));
+        enforce(tagFile !is null, new TagLibUninitializedException("Can't save uninitialized TagFile."));
         
-        auto result = taglib_file_save(tagLibFile);
-        enforce(result, new TagLibFileSaveException(format("Saving %s failed.", fileName)));
-        dirty = false;
+        auto result = taglib_file_save(tagFile);
+        enforce(result, new TagLibFileSaveException(format("Saving %s failed.", tagFileName)));
+        tags.save();
     }
     
-    TagLibAudioProperties audio;
+    TagLibAudio audio;
     TagLibTag tags;
     
 private:
 
-    void closeIfOpened(ForceClose force)
+    void closeIfOpened()
     {
-        if (tagLibFile !is null)
+        if (tagFile !is null)
         {
-            close(force);
+            close();
         }
     }
 
     void initProperties()
     {
-        enforce(tagLibFile !is null, new TagLibUninitializedException("Can't load Tags from uninitialized TagLibFile."));
-        enforce(taglib_file_is_valid(tagLibFile), new TagLibFileException(format("File is invalid: %s", fileName)));
+        enforce(tagFile !is null, new TagLibUninitializedException("Can't load Tags from uninitialized TagFile."));
+        enforce(taglib_file_is_valid(tagFile), new TagLibFileException(format("File is invalid: %s", tagFileName)));
         
-        tags  = new TagLibTag(tagLibFile, fileName);
-        audio = new TagLibAudioProperties(tagLibFile, fileName);
+        tags  = new TagLibTag(tagFile, tagFileName);
+        audio = new TagLibAudio(tagFile, tagFileName);
     }
-
-    void clearProperties()
-    {
-        audio = null;
-        tags = null;
-        
-        /+ @BUG@ This throws at runtime from within tag_c.dll.
-         + I'm not too sure what's going on, it could be that TagLib
-         + is trying to access *tagLibFile after the GC nukes it..
-         + If I could make this work I could catch invalid access
-         + at runtime to prevent crashes.
-         + 
-         + If you're an ASM/memory geek feel free to investigate. :)
-         +/
-        version (Disabled)
-        {
-            audio = new RuntimeGuard!TagLibAudioProperties(null, null);
-            tags  = new RuntimeGuard!TagLibTag(null, null);
-        }
-    }    
     
-    TagLib_File* tagLibFile;
-    
-    string fileName;
-    bool dirty;    
+    TagLib_File* tagFile;
+    string tagFileName;
 }
 
 class TagLibTagException : Exception
@@ -231,21 +162,32 @@ class TagLibTagException : Exception
     }        
 }
 
-private class TagLibTag
+enum Encoding
 {
-    this(TagLib_File* tagLibFile, string fileName)
+    Latin1 = TagLib_ID3v2_Encoding.TagLib_ID3v2_Latin1,
+    UTF16 = TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF16,
+    UTF16BE = TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF16BE,        
+    UTF8 = TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF8,
+}
+
+class TagLibTag
+{
+    bool _dirty;
+    
+    this()
     {
-        tagLibTag = taglib_file_tag(tagLibFile);
-        enforce(tagLibTag !is null, new TagLibTagException(format("Failed to create Tags from: %s.", fileName)));
     }
     
-    enum Encoding
+    this(TagLib_File* tagFile, string tagFileName)
     {
-        Latin1 = TagLib_ID3v2_Encoding.TagLib_ID3v2_Latin1,
-        UTF16 = TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF16,
-        UTF16BE = TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF16BE,        
-        UTF8 = TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF8,
-    }    
+        tagLibTag = taglib_file_tag(tagFile);
+        enforce(tagLibTag !is null, new TagLibTagException(format("Failed to create Tags from: %s.", tagFileName)));
+    }
+    
+    void save()
+    {
+        _dirty = false;
+    }
     
     @property void encoding(Encoding encoding)
     {
@@ -293,42 +235,60 @@ private class TagLibTag
     
     @property void title(string title)
     {
+        dirty = true;
         taglib_tag_set_title(tagLibTag, title.toStringz);
     }    
     
     @property void artist(string artist)
     {
+        dirty = true;
         taglib_tag_set_artist(tagLibTag, artist.toStringz);
     }
     
     @property void album(string album)
     {
+        dirty = true;
         taglib_tag_set_album(tagLibTag, album.toStringz);
     }
     
     @property void comment(string comment)
     {
+        dirty = true;
         taglib_tag_set_comment(tagLibTag, comment.toStringz);
     }
     
     @property void genre(string genre)
     {
+        dirty = true;
         taglib_tag_set_genre(tagLibTag, genre.toStringz);
     }
     
     @property void year(uint year)
     {
+        dirty = true;
         taglib_tag_set_year(tagLibTag, year);
     }
     
     @property void track(uint track)
     {
+        dirty = true;
         taglib_tag_set_track(tagLibTag, track);
     }    
     
     void free()
     {
+        dirty = false;
         taglib_tag_free_strings();
+    }
+    
+    @property void dirty(bool state)
+    {
+        _dirty = state;
+    }
+    
+    @property bool dirty()
+    {
+        return _dirty;
     }
     
     private TagLib_Tag* tagLibTag;
@@ -342,12 +302,16 @@ class TagLibAudioException : Exception
     }        
 }
 
-private class TagLibAudioProperties
+class TagLibAudio
 {
-    this(TagLib_File* tagLibFile, string fileName)
+    this()
     {
-        tagLibAudioProperties = taglib_file_audioproperties(tagLibFile);
-        enforce(tagLibAudioProperties !is null, new TagLibAudioException(format("Failed to create AudioProperties from: %s.", fileName)));
+    }
+    
+    this(TagLib_File* tagFile, string tagFileName)
+    {
+        tagLibAudioProperties = taglib_file_audioproperties(tagFile);
+        enforce(tagLibAudioProperties !is null, new TagLibAudioException(format("Failed to create AudioProperties from: %s.", tagFileName)));
     }    
     
     // getters
@@ -373,14 +337,4 @@ private class TagLibAudioProperties
     }   
    
     private TagLib_AudioProperties* tagLibAudioProperties;
-}
-
-private template RuntimeGuard(Base)
-{
-    alias AutoImplement!(Base, generateExceptionTrap, isAbstractFunction) RuntimeGuard;
-}
-
-private template generateExceptionTrap(C, func...)
-{
-    enum string generateExceptionTrap = `throw new TagLibUninitializedException("Tried to access properties of TagLibFile before it was properly initialized.");`;
 }
