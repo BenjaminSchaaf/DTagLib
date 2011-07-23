@@ -61,8 +61,8 @@ void main(string[] args)
         writefln("track   - \"%s\"", file.tags.track);
         writefln("genre   - \"%s\"", file.tags.genre);
 
-        seconds = file.audio.length % 60;
-        minutes = (file.audio.length - seconds) / 60;
+        seconds = file.audio.time % 60;
+        minutes = (file.audio.time - seconds) / 60;
 
         writefln("-- AUDIO --\n");
         writefln("bitrate     - %s", file.audio.bitrate);

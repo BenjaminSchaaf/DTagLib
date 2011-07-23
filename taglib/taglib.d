@@ -128,6 +128,22 @@ final class TagFile
         tags.save();
     }
     
+    // if only there was a simple forward mechanism for specific methods..
+    auto getTags()
+    {
+        return tags.getTags();
+    }
+    
+    auto setTags(T)(T t)
+    {
+        return tags.setTags(t);
+    }    
+    
+    auto getAudioInfo()
+    {
+        return audio.getAudioInfo();
+    }
+    
     TagLibAudio audio;
     TagLibTag tags;
     
@@ -162,6 +178,17 @@ class TagLibTagException : Exception
     }        
 }
 
+struct Tags
+{
+    string title;
+    string artist;
+    string album;
+    string comment;
+    string genre;
+    uint year;
+    uint track;
+}
+
 final class TagLibTag
 {
     enum Encoding
@@ -192,6 +219,36 @@ final class TagLibTag
     @property void encoding(Encoding encoding)
     {
         taglib_id3v2_set_default_text_encoding(cast(TagLib_ID3v2_Encoding)encoding);
+    }
+    
+    @property void setTags(Tags tags)
+    {
+        with (tags)
+        {
+            this.title = title;
+            this.artist = artist;
+            this.album = album;
+            this.comment = comment;
+            this.genre = genre;
+            this.year = year;
+            this.track = track;
+        }
+    }
+    
+    @property Tags getTags()
+    {
+        Tags tags;
+        with (tags)
+        {
+            title   = this.title;
+            artist  = this.artist;
+            album   = this.album;
+            comment = this.comment;
+            genre   = this.genre;
+            year    = this.year;
+            track   = this.track;
+        }
+        return tags;
     }
     
     // getters
@@ -302,6 +359,14 @@ class TagLibAudioException : Exception
     }        
 }
 
+struct AudioInfo
+{
+    int time;
+    int bitrate;  
+    int samplerate;
+    int channels; 
+}
+
 final class TagLibAudio
 {
     this()
@@ -316,7 +381,20 @@ final class TagLibAudio
     
     // getters
     
-    @property int length()
+    @property AudioInfo getAudioInfo()
+    {
+        AudioInfo audio;
+        with (audio)
+        {
+            time   = this.time;
+            bitrate  = this.bitrate;
+            samplerate = this.samplerate;
+            channels = this.channels;
+        }
+        return audio;
+    }    
+    
+    @property int time()
     {
         return taglib_audioproperties_length(tagLibAudioProperties);
     }
