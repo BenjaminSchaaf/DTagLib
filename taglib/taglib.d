@@ -162,16 +162,16 @@ class TagLibTagException : Exception
     }        
 }
 
-enum Encoding
-{
-    Latin1 = TagLib_ID3v2_Encoding.TagLib_ID3v2_Latin1,
-    UTF16 = TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF16,
-    UTF16BE = TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF16BE,        
-    UTF8 = TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF8,
-}
-
 class TagLibTag
 {
+    enum Encoding
+    {
+        Latin1 = TagLib_ID3v2_Encoding.TagLib_ID3v2_Latin1,
+        UTF16 = TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF16,
+        UTF16BE = TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF16BE,        
+        UTF8 = TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF8,
+    }    
+    
     bool _dirty;
     
     this()

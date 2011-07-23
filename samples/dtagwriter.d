@@ -26,7 +26,7 @@ void main(string[] args)
     args.popFront;    
     foreach (arg; args)
     {
-        file = new TagLibFile(arg);
+        file = new TagFile(arg);
 
         file.tags.title = "The New " ~ file.tags.title;
         file.tags.artist = "The New " ~ file.tags.artist;
