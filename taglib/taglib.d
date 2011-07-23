@@ -162,7 +162,7 @@ class TagLibTagException : Exception
     }        
 }
 
-class TagLibTag
+final class TagLibTag
 {
     enum Encoding
     {
@@ -302,7 +302,7 @@ class TagLibAudioException : Exception
     }        
 }
 
-class TagLibAudio
+final class TagLibAudio
 {
     this()
     {
