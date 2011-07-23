@@ -56,6 +56,27 @@
         http://stackoverflow.com/questions/4413949/using-taglib-in-visual-studio-2010
         http://stackoverflow.com/questions/4413949/using-taglib-in-visual-studio-2010
 
+== Using DTagLib ==
+    TagLib is straightforward to use. Simply instantiate a TagFile class with the path
+    of an audio file:
+        
+        auto tagFile = new TagFile(r"C:\My Music\Artist - Track.mp3");
+        
+    And then read/modify the file's tags, and read any audio information if you want to:
+        
+        with (tagFile.tags)
+        {
+            writeln(artist);  // read
+            year = 2000;      // modify
+        }
+        
+        writeln(tagFile.audio.samplerate);  // audio properties can only be read
+
+    After you're done with a tagFile you should call close() on it to release the
+    file handle.
+    
+    Also see the various examples in the samples folder.
+
 == Contact ==
     To contact me, send me a message via Github @ https://github.com/AndrejMitrovic, 
     or e-mail me at: andrej.mitrovich<at>gmail.com
