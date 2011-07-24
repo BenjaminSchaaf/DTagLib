@@ -86,8 +86,10 @@
     - Port more samples.
 
 == Acknowledgments ==
-    Thanks to Scott Wheeler and all other developers and contributors in the
+    Thanks to Scott Wheeler and all other developers and contributors of the
     TagLib project.
+    Thanks to Johannes Pfau for verifying that DTagLib works on Linux 
+    and helping me with the build commands on Linux.
 
 == Licensing ==
     TagLib is dual-licensed under LGPL and MPL.
