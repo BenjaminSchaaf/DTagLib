@@ -98,8 +98,7 @@ void main(string[] args)
 }
 
 void printFields(T)(T args)
-{
-    import std.conv;
+{    
     auto values = args.tupleof;
     
     auto members = [__traits(allMembers, T)];

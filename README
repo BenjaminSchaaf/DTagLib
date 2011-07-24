@@ -1,7 +1,7 @@
 == DTagLib ==
     This is a D wrapper library of the TagLib library (abstract API only).
     
-    The library has been tested on Windows XP 32bit.
+    The library has been tested on Windows XP 32bit and Ubuntu 32bit systems.
     
     This project is still in alpha stage, things might break at any moment.
     Project Homepage: https://github.com/AndrejMitrovic/DTagLib
@@ -16,13 +16,30 @@
     DEALINGS IN THE SOFTWARE. 
 
 == Building ==
-    Build the wrapper library:
-        .\taglib\build.bat
+    On Windows:
+        dmd .\build.d && .\build.exe
         
-    Build the samples:
-        .\samples\build.bat
+    On Linux:
+        dmd ./build.d && ./build
+        
+    This will build the library and the sample applications.
+    
+    Linux Note: On Linux the aplication has to be able to find the 
+    C TagLib shared library, or it won't be able to run.
+    
+    You can do guarantee this in several ways:
+    
+    1. Temporarily add the location to TagLib (this depends on where it was installed,
+    it depends on your OS). For Ubuntu 10.10, running an example like this works:
+    
+        LD_LIBRARY_PATH=/usr/local/lib ./dtagreader
+        
+    2. Try adding a line containing '/usr/local/lib' to /etc/ld.so.conf and run:
+        sudo ldconfig
 
-== Requirements for building TagLib DLLs ==
+    3. Put the libtag_c.so.0 shared library in the root of your project.
+
+== Requirements for building TagLib DLLs on Windows ==
     TagLib DLLs are already distributed in this binding, but if you want to build them yourself you need:
     
     TagLib from:
@@ -34,7 +51,7 @@
     Cmake from:
         http://www.cmake.org/
     
-== Building TagLib DLLs ==
+== Building TagLib DLLs on Windows ==
     Extract TagLib.
     Extract zlib dev package to TagLib directory.
         Rename zlib/lib/zdll.lib to zlib.lib
@@ -55,6 +72,17 @@
         https://github.com/RJ/playdar-core/wiki/Building-on-Windows
         http://stackoverflow.com/questions/4413949/using-taglib-in-visual-studio-2010
         http://stackoverflow.com/questions/4413949/using-taglib-in-visual-studio-2010
+
+== Building TagLib shared libraries on Linux ==    
+    TagLib might already exist as a precompiled package, see your package manager
+    if that's the case.
+    
+    Otherwise, see the INSTALL file in the TagLib sources. Usually the command to build
+    and install is simply:
+    
+        cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_RELEASE_TYPE=Release .
+        make
+        sudo make install
 
 == Using DTagLib ==
     TagLib is straightforward to use. Simply instantiate a TagFile class with the path
