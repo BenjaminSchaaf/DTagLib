@@ -27,22 +27,21 @@ void main(string[] args)
     args.popFront;    
     foreach (arg; args)
     {
-        file = new TagFile(arg);
-        file.close();
+        file = TagFile(arg);
 
         bool failedSave;
         try
         {
             file.save();
         }
-        catch (TagLibUninitializedException exc)
+        catch (TagLibException exc)
         {
             failedSave = true;
         }
         
-        enforce(failedSave);
+        enforce(!failedSave);
         
-        file = new TagFile(arg);
+        file = TagFile(arg);
         
         file.tags.title = file.tags.title;
         file.tags.artist = file.tags.artist;

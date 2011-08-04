@@ -50,7 +50,7 @@ void main(string[] args)
     {
         writefln("******************** \"%s\" ********************\n", arg);
 
-        file = new TagFile(arg);
+        file = TagFile(arg);
 
         writeln("-- TAG --");
         writefln("title   - \"%s\"", file.tags.title);
@@ -69,7 +69,5 @@ void main(string[] args)
         writefln("sample rate - %s", file.audio.samplerate);
         writefln("channels    - %s", file.audio.channels);
         writefln("length      - %s:%02s", minutes, seconds);
-
-        file.close();  // do not access file after closing it
     }
 }

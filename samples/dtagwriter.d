@@ -26,7 +26,7 @@ void main(string[] args)
     args.popFront;    
     foreach (arg; args)
     {
-        file = new TagFile(arg);
+        file = TagFile(arg);
 
         file.tags.title = "The New " ~ file.tags.title;
         file.tags.artist = "The New " ~ file.tags.artist;
@@ -37,6 +37,5 @@ void main(string[] args)
         writefln("album   - \"%s\"", file.tags.album);
 
         file.save();   // call save to write changes
-        file.close();  // do not access file after closing it
     }
 }

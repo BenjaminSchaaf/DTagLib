@@ -25,7 +25,7 @@ import std.string;
 
 import taglib.taglib;
 
-// todo: need to extract the list of file format supported by taglib,
+// todo: need to extract the list of file formats supported by taglib
 // and put them in the DTagLib wrapper as an enum or something.
 enum audioExtensions = ["ape":0, "asf":0, "mp3":0, "flac":0, "aiff":0];
 
@@ -57,16 +57,14 @@ void main(string[] args)
         
         foreach (file; sub)
         {
-            auto tagFile = new TagFile(file);
+            auto tagFile = TagFile(file);
             
-            tags ~= tagFile.getTags;
+            tags ~= tagFile.tags.tags;
             
             time ~= tagFile.audio.time;
             bitrate ~= tagFile.audio.bitrate;
             samplerate ~= tagFile.audio.samplerate;
             channels ~= tagFile.audio.channels;
-            
-            tagFile.close();
         }
         
         auto printListing = format("Track listing for %s:", sub[0].dirname);
@@ -79,10 +77,10 @@ void main(string[] args)
             writeln();
         }
 
-        auto audioInfo = AudioInfo(reduce!"a + b"(time) / time.length,
-                                   reduce!"a + b"(bitrate) / bitrate.length,
-                                   to!int(reduce!"a + b"(samplerate) / samplerate.length),
-                                   to!int(reduce!"a + b"(channels) / channels.length));
+        auto audioInfo = Audio(reduce!"a + b"(time) / time.length,
+                               reduce!"a + b"(bitrate) / bitrate.length,
+                               to!int(reduce!"a + b"(samplerate) / samplerate.length),
+                               to!int(reduce!"a + b"(channels) / channels.length));
         
         auto averageListing = format("Averages for %s:", sub[0].dirname);
         writeln(averageListing);
