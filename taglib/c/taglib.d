@@ -44,8 +44,8 @@ version(Windows)
 }
 else
 {
-	import core.stdc.stdlib;
-	alias free taglib_free;
+    import core.stdc.stdlib;
+    alias free taglib_free;
 }
 
 /*******************************************************************************

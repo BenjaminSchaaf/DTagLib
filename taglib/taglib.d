@@ -202,41 +202,41 @@ private struct TagLibTag
 
     @property string title()
     {
-	    auto ptr = taglib_tag_title(tagLibTag);
-		scope(exit)
-		    taglib_free(ptr);
+        auto ptr = taglib_tag_title(tagLibTag);
+        scope(exit)
+            taglib_free(ptr);
         return to!string(ptr);
     }
 
     @property string artist()
     {
-	    auto ptr = taglib_tag_artist(tagLibTag);
-		scope(exit)
-		    taglib_free(ptr);
+        auto ptr = taglib_tag_artist(tagLibTag);
+        scope(exit)
+            taglib_free(ptr);
         return to!string(ptr);
     }
 
     @property string album()
     {
-	    auto ptr = taglib_tag_album(tagLibTag);
-		scope(exit)
-		    taglib_free(ptr);
+        auto ptr = taglib_tag_album(tagLibTag);
+        scope(exit)
+            taglib_free(ptr);
         return to!string(ptr);
     }
 
     @property string comment()
     {
-	    auto ptr = taglib_tag_comment(tagLibTag);
-		scope(exit)
-		    taglib_free(ptr);
+        auto ptr = taglib_tag_comment(tagLibTag);
+        scope(exit)
+            taglib_free(ptr);
         return to!string(ptr);
     }
 
     @property string genre()
     {
-	    auto ptr = taglib_tag_genre(tagLibTag);
-		scope(exit)
-		    taglib_free(ptr);
+        auto ptr = taglib_tag_genre(tagLibTag);
+        scope(exit)
+            taglib_free(ptr);
         return to!string(ptr);
     }
 
