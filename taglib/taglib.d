@@ -17,7 +17,7 @@ import taglib.c.taglib;
 static this()
 {
     taglib_set_strings_unicode(true);
-    taglib_set_string_management_enabled(true);
+    taglib_set_string_management_enabled(false);
     taglib_id3v2_set_default_text_encoding(TagLib_ID3v2_Encoding.TagLib_ID3v2_UTF8);
 }
 
@@ -75,7 +75,6 @@ struct TagFile
             if (tagFile !is null)  // Refcounted bug: dtor is being called for no reason before the ctor is called.
             {
                 initialized = false;
-                taglib_tag_free_strings();
                 taglib_file_free(tagFile);
                 tagFile = null;
             }
@@ -203,27 +202,42 @@ private struct TagLibTag
 
     @property string title()
     {
-        return to!string(taglib_tag_title(tagLibTag));
+	    auto ptr = taglib_tag_title(tagLibTag);
+		scope(exit)
+		    taglib_free(ptr);
+        return to!string(ptr);
     }
 
     @property string artist()
     {
-        return to!string(taglib_tag_artist(tagLibTag));
+	    auto ptr = taglib_tag_artist(tagLibTag);
+		scope(exit)
+		    taglib_free(ptr);
+        return to!string(ptr);
     }
 
     @property string album()
     {
-        return to!string(taglib_tag_album(tagLibTag));
+	    auto ptr = taglib_tag_album(tagLibTag);
+		scope(exit)
+		    taglib_free(ptr);
+        return to!string(ptr);
     }
 
     @property string comment()
     {
-        return to!string(taglib_tag_comment(tagLibTag));
+	    auto ptr = taglib_tag_comment(tagLibTag);
+		scope(exit)
+		    taglib_free(ptr);
+        return to!string(ptr);
     }
 
     @property string genre()
     {
-        return to!string(taglib_tag_genre(tagLibTag));
+	    auto ptr = taglib_tag_genre(tagLibTag);
+		scope(exit)
+		    taglib_free(ptr);
+        return to!string(ptr);
     }
 
     @property uint year()

@@ -35,6 +35,19 @@ void  taglib_set_strings_unicode(int unicode);
  */
 void  taglib_set_string_management_enabled(int management);
 
+/*!
+ * Explicitly free a string returned from TagLib
+ */
+version(Windows)
+{
+    void taglib_free(void* pointer);
+}
+else
+{
+	import core.stdc.stdlib;
+	alias free taglib_free;
+}
+
 /*******************************************************************************
  * File API
  ******************************************************************************/
