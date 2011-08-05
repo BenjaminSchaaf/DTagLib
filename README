@@ -3,7 +3,6 @@
     
     The library has been tested on Windows XP 32bit and Ubuntu 32bit systems.
     
-    This project is still in alpha stage, things might break at any moment.
     Project Homepage: https://github.com/AndrejMitrovic/DTagLib
     
 == Disclaimer ==
@@ -52,26 +51,7 @@
         http://www.cmake.org/
     
 == Building TagLib DLLs on Windows ==
-    Extract TagLib.
-    Extract zlib dev package to TagLib directory.
-        Rename zlib/lib/zdll.lib to zlib.lib
-
-    Create a `build` directory in the TagLib directory and CD to it.
-    
-    Run:
-        cmake -DZLIB_INCLUDE_DIR:PATH="D:\dev\lib\D\taglib-1.7\zlib\include" -DZLIB_LIBRARY:FILEPATH="D:\dev\lib\D\taglib-1.7\zlib\lib\zlib.lib" -G "Visual Studio 10" ..
-
-    Note: Replace "D:\dev\lib\D\" to wherever you've extracted TagLib.
-
-    Build the ALL_BUILD project in the taglib.sln solution in Release mode.
-
-    In the `bindings\c\Release` directory, copy tag_c.dll to your project folder.
-    In the `taglib\Release` directory copy tag.dll to your project folder.
-
-    Information on building retreived from:
-        https://github.com/RJ/playdar-core/wiki/Building-on-Windows
-        http://stackoverflow.com/questions/4413949/using-taglib-in-visual-studio-2010
-        http://stackoverflow.com/questions/4413949/using-taglib-in-visual-studio-2010
+    To be updated. For now use the distributed DLLs
 
 == Building TagLib shared libraries on Linux ==    
     TagLib might already exist as a precompiled package, see your package manager
@@ -100,9 +80,6 @@
         
         writeln(tagFile.audio.samplerate);  // audio properties can only be read
 
-    After you're done with a tagFile you should call close() on it to release the
-    file handle.
-    
     Also see the various examples in the samples folder.
 
 == Contact ==
@@ -110,22 +87,23 @@
     or e-mail me at: andrej.mitrovich<at>gmail.com
 
 == Todo ==
-    - Systems other than XP 32bit have not been tested.
-    - Port more samples.
+    - Make more examples, maybe utilizing a GUI library like gtkD.
 
+== Contributors ==
+    Johannes Pfau tested and verified that DTagLib works on Linux.
+    He also contributed with DTagLib and TagLib patches and helped improve the
+    memory management of DTagLib. Thanks, Johannes!
+    
 == Acknowledgments ==
     Thanks to Scott Wheeler and all other developers and contributors of the
     TagLib project.
-    Thanks to Johannes Pfau for verifying that DTagLib works on Linux 
-    and helping me with the build commands on Linux.
 
 == Licensing ==
     TagLib is dual-licensed under LGPL and MPL.
     Please see TagLib's original licenses in the COPYING.MPL and COPYING.LGPL files.
     
-    The D wrapper library is Boost-licensed. 
+    The DTagLib wrapper library is Boost-licensed. 
 
 == Links ==
     D2 Programming Language Homepage: http://d-programming-language.org/
     TagLib homepage: http://developer.kde.org/~wheeler/taglib.html
-    
