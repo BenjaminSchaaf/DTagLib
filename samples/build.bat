@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableDelayedExpansion
 set "TAGLIB=..\taglib"
-:: ~ implib taglib_implib.lib tag_c.def
+:: ~ implib /s taglib_implib.lib libtag_c.dll
 For %%a in (*.d) do dmd -g -of%%~na.exe %%a -I.. %TAGLIB%\taglib.lib taglib_implib.lib
 :: ~ For %%a in (dtagreader.d) do dmd -g -of%%~na.exe %%a -I.. %TAGLIB%\taglib.lib taglib_implib.lib && %%~na.exe "E:\My Music\Arch Enemy\1998 - Stigmata\(01) [Arch Enemy] Beast of Man.flac"
 
