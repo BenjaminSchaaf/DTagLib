@@ -74,12 +74,17 @@ struct TagFile
         {
             if (tagFile !is null)  // Refcounted bug: dtor is being called for no reason before the ctor is called.
             {
-                initialized = false;
-                taglib_file_free(tagFile);
-                tagFile = null;
+                dispose();
             }
         }
 
+        void dispose()
+        {
+            initialized = false;
+            taglib_file_free(tagFile);
+            tagFile = null;
+        }
+        
         void initProperties()
         {
             enforce(taglib_file_is_valid(tagFile), new TagLibException(format("File is invalid: %s", tagFileName)));
@@ -125,6 +130,12 @@ struct TagFile
         _data.save();
     }
 
+    void dispose()
+    {
+        enforce(_data.initialized, new TagLibException("TagFile is uninitialized."));
+        _data.dispose();
+    }
+    
     @property ref TagLibTag tags()
     {
         enforce(_data.initialized, new TagLibException("TagFile is uninitialized."));

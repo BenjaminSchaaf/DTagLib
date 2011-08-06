@@ -22,6 +22,7 @@ TagFile globTag;
 /+
  + @BUG@: globals that use Refcounted don't get their dtor called on app exit:
  + http://d.puremagic.com/issues/show_bug.cgi?id=6437
+ + You can use the dispose() method for globals.
  +/
 
 void main(string[] args)
@@ -35,7 +36,9 @@ void main(string[] args)
         writefln("artist  - \"%s\"", globTag.tags.artist);
         writefln("album   - \"%s\"", globTag.tags.album);
     }
-}  // the dtor should be called here, however see @BUG@ above.
+    
+    globTag.dispose();  // workaround
+}  // the dtor should be automatically called here, however see @BUG@ above.
 
 void loadTags(string filename)
 {
