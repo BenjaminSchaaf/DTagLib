@@ -1,0 +1,9 @@
+{
+    "name": "DTagLib",
+    "description": "D wrapper library for the TagLib Abstract API.",
+    "authors": ["Andrej Mitrovich"],
+    "license": "Boost",
+    "homepage": "https://github.com/AndrejMitrovic/DTagLib",
+    "targetType": "library",
+    "libs-posix": [":libtag_c.so.0"],
+}
