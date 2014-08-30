@@ -1,5 +1,5 @@
 {
-    "name": "DTagLib",
+    "name": "dtaglib",
     "description": "D wrapper library for the TagLib Abstract API.",
     "authors": ["Andrej Mitrovich"],
     "license": "Boost",
